@@ -21,7 +21,8 @@ namespace StupidHorn
     {
 		static float buttonDownTimer_;
 		static bool buttonReleasedSinceLastHornTriggered_ = true;
-        static float multiplier = 20;
+        static float multiplier = 10;
+        static float stupidBubble = 100;
 	
         public void Initialize(IManager manager, string ipcIdentifier)
         {
@@ -42,7 +43,10 @@ namespace StupidHorn
 					
 				if (Entry.buttonReleasedSinceLastHornTriggered_ && (Entry.buttonDownTimer_ >= __instance.maxButtonDownTime_ || isReleased_))
 				{
-					float percent = Mathf.InverseLerp(0f, __instance.maxButtonDownTime_, Entry.buttonDownTimer_) * Entry.multiplier;
+					float percent = Mathf.InverseLerp(0f, __instance.maxButtonDownTime_, Entry.buttonDownTimer_);
+                    if (Entry.buttonDownTimer_ >= __instance.maxButtonDownTime_)
+                        percent = stupidBubble;
+                    else percent *= multiplier;
 					Entry.buttonReleasedSinceLastHornTriggered_ = false;
 					Vector3 vector = __instance.transform.position;
 					vector += __instance.transform.lossyScale.z * __instance.bubbleOffset_;
